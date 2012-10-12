@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project name="PreMock Jar" default="jar" basedir=".">
+
+    <property name="project" value="premock"/>
+    <property name="target.path" value="lib"/>
+    <property name="classes" value="bin"/>
+    <property name="pkg_base" value="com/objectpartners/buesing/premock"/>
+
+    <target name="jar">
+        <echo message="Building : PreMock" />
+
+        <tstamp>
+            <format property="TODAY_UK" pattern="yyyy-MM-dd HH:mm" locale="en,UK"/>
+        </tstamp>
+
+        <mkdir dir="${target.path}" />
+
+        <jar jarfile="${target.path}/${project}.jar" basedir="${classes}" includes="${pkg_base}/**" />
+    </target>
+
+</project>
