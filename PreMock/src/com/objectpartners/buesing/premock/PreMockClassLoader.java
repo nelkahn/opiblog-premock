@@ -50,7 +50,8 @@ public class PreMockClassLoader extends ClassLoader {
                 // otherwise leave it up to the parent.
                 return findClass(name);
             } else {
-                return super.loadClass(name);
+                return findClassNoModify(name);
+//                return super.loadClass(name);
             }
         }
     }
@@ -89,4 +90,23 @@ public class PreMockClassLoader extends ClassLoader {
         }
     }
 
+    public Class<?> findClassNoModify(final String name) throws ClassNotFoundException {
+
+        try {
+//            System.err.println("[PreMockClassLoader] findClass - Removing final modifiers for :: " + name);
+            final CtClass cc = this.pool.get(name);
+
+            final byte[] b = cc.toBytecode();
+
+            final Class<?> result = defineClass(name, b, 0, b.length);
+
+            return result;
+        } catch (final NotFoundException e) {
+            throw new ClassNotFoundException();
+        } catch (final IOException e) {
+            throw new ClassNotFoundException();
+        } catch (final CannotCompileException e) {
+            throw new ClassNotFoundException();
+        }
+    }
 }
