@@ -2,9 +2,10 @@
 <project name="PreMock Jar" default="jar" basedir=".">
 
     <property name="project" value="premock"/>
-    <property name="target.path" value="lib"/>
+    <property name="target.path" value="d:/Jet/SharePlot/lib/mockito"/>
     <property name="classes" value="bin"/>
     <property name="pkg_base" value="com/objectpartners/buesing/premock"/>
+    <property name="conf_pkg_base" value="org/mockito/configuration"/>
 
     <target name="jar">
         <echo message="Building : PreMock" />
@@ -15,7 +16,7 @@
 
         <mkdir dir="${target.path}" />
 
-        <jar jarfile="${target.path}/${project}.jar" basedir="${classes}" includes="${pkg_base}/**" />
+        <jar jarfile="${target.path}/${project}.jar" basedir="${classes}" includes="${pkg_base}/**,${conf_pkg_base}/**" />
     </target>
 
 </project>
