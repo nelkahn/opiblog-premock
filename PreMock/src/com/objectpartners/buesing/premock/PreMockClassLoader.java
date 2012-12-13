@@ -40,7 +40,7 @@ public class PreMockClassLoader extends ClassLoader {
             classLoaderString = classLoaderString.substring(startIndex, endIndex);
 
             // for unix systems replace : with ;
-            classLoaderString.replaceAll(":", ";");
+            classLoaderString = classLoaderString.replaceAll(":", ";");
             final String[] pathItems = classLoaderString.split(";");
 
             // add extracted path elements to the ClassPool
