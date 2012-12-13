@@ -2,7 +2,7 @@
 <project name="PreMock Jar" default="jar" basedir=".">
 
     <property name="project" value="premock"/>
-    <property name="target.path" value="d:/Jet/SharePlot/lib/mockito"/>
+    <property name="target.path" value="d:/Jet/Amanda/lib/mockito"/>
     <property name="classes" value="bin"/>
     <property name="pkg_base" value="com/objectpartners/buesing/premock"/>
     <property name="conf_pkg_base" value="org/mockito/configuration"/>

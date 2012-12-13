@@ -26,6 +26,30 @@ public class PreMockClassLoader extends ClassLoader {
     public PreMockClassLoader(final ClassLoader parent) {
         super(parent);
         this.pool = ClassPool.getDefault();
+
+        /* When loaded inside the ant classloader the classpath does not get passed through the ClassPool
+         * so it is necessary to exract the classpath elements from the classloader and add to the ClassPool.
+         */
+        String classLoaderString = this.pool.getClassLoader().toString();
+        if (classLoaderString.startsWith("AntClassLoader")) {
+
+            // extract semicolon separated list which is between []
+            int startIndex = classLoaderString.indexOf('[');
+            startIndex++;
+            final int endIndex = classLoaderString.indexOf(']');
+            classLoaderString = classLoaderString.substring(startIndex, endIndex);
+
+            final String[] pathItems = classLoaderString.split(";");
+
+            // add extracted path elements to the ClassPool
+            try {
+                for (final String pathItem : pathItems) {
+                    this.pool.appendClassPath(pathItem);
+                }
+            } catch (final NotFoundException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -59,7 +83,7 @@ public class PreMockClassLoader extends ClassLoader {
     @Override
     public Class<?> findClass(final String name) throws ClassNotFoundException {
         try {
-//            System.err.println("[PreMockClassLoader] findClass - Removing final modifiers for :: " + name);
+            System.err.println("[PreMockClassLoader] findClass - Removing final modifiers for :: " + name);
             final CtClass cc = this.pool.get(name);
 
             // remove final modifier from the class
@@ -81,17 +105,17 @@ public class PreMockClassLoader extends ClassLoader {
 
             return result;
         } catch (final NotFoundException e) {
-            throw new ClassNotFoundException();
+            throw new ClassNotFoundException("NotFoundException : " + name + " :: " + this.pool, e);
         } catch (final IOException e) {
-            throw new ClassNotFoundException();
+            throw new ClassNotFoundException("IOException : " + name, e);
         } catch (final CannotCompileException e) {
-            throw new ClassNotFoundException();
+            throw new ClassNotFoundException("CannotCompileException : " + name, e);
         }
     }
 
     private Class<?> findClassNoModify(final String name) throws ClassNotFoundException {
         try {
-//            System.err.println("[PreMockClassLoader] findClass - Removing final modifiers for :: " + name);
+            System.err.println("[PreMockClassLoader] findClass - Loading without change :: " + name);
             final CtClass cc = this.pool.get(name);
 
             final byte[] b = cc.toBytecode();
@@ -100,11 +124,11 @@ public class PreMockClassLoader extends ClassLoader {
 
             return result;
         } catch (final NotFoundException e) {
-            throw new ClassNotFoundException();
+            throw new ClassNotFoundException("NotFoundException : " + name + " :: " + this.pool, e);
         } catch (final IOException e) {
-            throw new ClassNotFoundException();
+            throw new ClassNotFoundException("IOException : " + name, e);
         } catch (final CannotCompileException e) {
-            throw new ClassNotFoundException();
+            throw new ClassNotFoundException("CannotCompileException : " + name, e);
         }
     }
 }

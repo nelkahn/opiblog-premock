@@ -30,7 +30,7 @@ public class PreMockJUnit4ClassRunner extends BlockJUnit4ClassRunner {
             final TestClass testClass = new TestClass(clazz);
             replaceTestClass(testClass);
         } catch (final ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("ClassNotFoundException for name : " + unitTestClass.getName(), e);
         }
     }
 
