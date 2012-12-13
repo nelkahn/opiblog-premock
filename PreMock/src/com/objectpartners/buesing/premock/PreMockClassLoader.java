@@ -39,6 +39,8 @@ public class PreMockClassLoader extends ClassLoader {
             final int endIndex = classLoaderString.indexOf(']');
             classLoaderString = classLoaderString.substring(startIndex, endIndex);
 
+            // for unix systems replace : with ;
+            classLoaderString.replaceAll(":", ";");
             final String[] pathItems = classLoaderString.split(";");
 
             // add extracted path elements to the ClassPool
