@@ -83,7 +83,7 @@ public class PreMockClassLoader extends ClassLoader {
     @Override
     public Class<?> findClass(final String name) throws ClassNotFoundException {
         try {
-            System.err.println("[PreMockClassLoader] findClass - Removing final modifiers for :: " + name);
+//            System.err.println("[PreMockClassLoader] findClass - Removing final modifiers for :: " + name);
             final CtClass cc = this.pool.get(name);
 
             // remove final modifier from the class
@@ -115,7 +115,7 @@ public class PreMockClassLoader extends ClassLoader {
 
     private Class<?> findClassNoModify(final String name) throws ClassNotFoundException {
         try {
-            System.err.println("[PreMockClassLoader] findClass - Loading without change :: " + name);
+//            System.err.println("[PreMockClassLoader] findClass - Loading without change :: " + name);
             final CtClass cc = this.pool.get(name);
 
             final byte[] b = cc.toBytecode();
